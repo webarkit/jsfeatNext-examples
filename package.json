@@ -1,0 +1,37 @@
+{
+  "name": "jsfeatnext-example",
+  "version": "1.0.0",
+  "description": "A simple typescript jsfeatNextt example.",
+  "main": "index.js",
+  "scripts": {
+    "dev-ts": "rimraf ./build && tsc && webpack --mode development --progress --watch",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-ts": "rimraf ./build && tsc && webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kalwalt/jsfeatNext-example.git"
+  },
+  "keywords": [
+    "jsfeatNext",
+    "jsfeat",
+    "typescript",
+    "computer-vision"
+  ],
+  "author": "Walter Perdan",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/kalwalt/jsfeatNext-example/issues"
+  },
+  "homepage": "https://github.com/kalwalt/jsfeatNext-example#readme",
+  "dependencies": {
+    "@webarkit/jsfeat-next": "^0.7.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.8.4",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  },
+  "devDependencies": {
+    "ts-loader": "^9.4.1"
+  }
+}
