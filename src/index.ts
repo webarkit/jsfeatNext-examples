@@ -68,15 +68,6 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             process();
         });
     });
-    /*function moveBytes(src, dest, width, height) {
-        var i, j = 0;
-        for (i = 0; i < width * height * 4;) {
-            dest[i++] = src[j];
-            dest[i++] = src[j];
-            dest[i++] = src[j++];
-            dest[i++] = 255;
-        }
-    }*/
     function render_mono_image(src: Uint8Array, dst: Uint32Array, sw: number, sh: number, dw: number) {
         var alpha = (0xff << 24);
         for (var i = 0; i < sh; ++i) {
@@ -91,15 +82,11 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         ctx.drawImage(video, 0, 0, width, height);
         var image_data = ctx.getImageData(0, 0, width, height);
         var img_u8 = new jsfeat.matrix_t(width, height, U8_t | C1_t);
-        //var t =  img.grayscale(image_data.data, width, height, img_u8, COLOR_RGBA2GRAY);
-        //var t =  img.pyrdown(img_u8, mat, height, width);
+        var t =  img.grayscale(image_data.data, width, height, img_u8, COLOR_RGBA2GRAY);
         var data_u32 = new Uint32Array(image_data.data.buffer);
-        // we convert to mono gray image, check both methods
+        // we convert to mono gray image
         render_mono_image(img_u8.data, data_u32, width, height, 640)
-        //moveBytes(img_u8.data, image_data.data, width, height);
         ctx.putImageData(image_data, 0, 0);
         requestAnimationFrame(process);
     }
 }
-
-
