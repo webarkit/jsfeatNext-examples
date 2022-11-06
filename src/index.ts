@@ -82,7 +82,8 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         ctx.drawImage(video, 0, 0, width, height);
         var image_data = ctx.getImageData(0, 0, width, height);
         var img_u8 = new jsfeat.matrix_t(width, height, U8_t | C1_t);
-        var t =  img.grayscale(image_data.data, width, height, img_u8, COLOR_RGBA2GRAY);
+        img.grayscale(image_data.data, width, height, img_u8, COLOR_RGBA2GRAY);
+        img.gaussian_blur(img_u8, img_u8, 5, 0)
         var data_u32 = new Uint32Array(image_data.data.buffer);
         // we convert to mono gray image
         render_mono_image(img_u8.data, data_u32, width, height, 640)
