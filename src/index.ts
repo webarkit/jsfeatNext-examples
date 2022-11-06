@@ -6,12 +6,100 @@ console.log(jsfeatNext);
 //console.log(jsfeatN);
 
 const jsfeat = jsfeatNext.jsfeatNext;
+const U8_t = jsfeat.U8_t;
 const F32_t = jsfeat.F32_t;
 const C1_t = jsfeat.C1_t;
+const COLOR_RGBA2GRAY = jsfeat.COLOR_RGBA2GRAY;
+
+let img = new jsfeat.imgproc();
+console.log(img);
+
+
+interface IHint {
+    audio: boolean;
+    video: boolean | object;
+}
 
 
 // create a 3x3 float matrix_t 
 var mat = new jsfeat.matrix_t(3, 3, F32_t | C1_t);
+var canvas = document.getElementById('canvas') as HTMLCanvasElement;
+var ctx = canvas.getContext('2d');
+var video = document.getElementById('video') as HTMLVideoElement;
 
 console.log(mat);
+console.log(ctx);
+
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    var hint: IHint = {
+        audio: false,
+        video: true
+    };
+    if (window.innerWidth < 800) {
+        var width = (window.innerWidth < window.innerHeight) ? 240 : 360;
+        var height = (window.innerWidth < window.innerHeight) ? 360 : 240;
+
+        var aspectRatio = window.innerWidth / window.innerHeight;
+
+        console.log(width, height);
+
+        hint = {
+            audio: false,
+            video: {
+                facingMode: 'environment',
+                width: { min: width, max: width }
+            },
+        };
+
+        console.log(hint);
+    }
+
+    navigator.mediaDevices.getUserMedia(hint).then(function (stream) {
+        video.srcObject = stream;
+        video.addEventListener('loadedmetadata', function () {
+            video.play();
+
+            console.log('video', video, video.videoWidth, video.videoHeight);
+
+            var canvasWidth = video.videoWidth;
+            var canvasHeight = video.videoHeight;
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+            process();
+        });
+    });
+    /*function moveBytes(src, dest, width, height) {
+        var i, j = 0;
+        for (i = 0; i < width * height * 4;) {
+            dest[i++] = src[j];
+            dest[i++] = src[j];
+            dest[i++] = src[j++];
+            dest[i++] = 255;
+        }
+    }*/
+    function render_mono_image(src: Uint8Array, dst: Uint32Array, sw: number, sh: number, dw: number) {
+        var alpha = (0xff << 24);
+        for (var i = 0; i < sh; ++i) {
+            for (var j = 0; j < sw; ++j) {
+                var pix = src[i * sw + j];
+                dst[i * dw + j] = alpha | (pix << 16) | (pix << 8) | pix;
+            }
+        }
+    }
+    function process() {
+        var width = 640, height = 480;
+        ctx.drawImage(video, 0, 0, width, height);
+        var image_data = ctx.getImageData(0, 0, width, height);
+        var img_u8 = new jsfeat.matrix_t(width, height, U8_t | C1_t);
+        //var t =  img.grayscale(image_data.data, width, height, img_u8, COLOR_RGBA2GRAY);
+        //var t =  img.pyrdown(img_u8, mat, height, width);
+        var data_u32 = new Uint32Array(image_data.data.buffer);
+        // we convert to mono gray image, check both methods
+        render_mono_image(img_u8.data, data_u32, width, height, 640)
+        //moveBytes(img_u8.data, image_data.data, width, height);
+        ctx.putImageData(image_data, 0, 0);
+        requestAnimationFrame(process);
+    }
+}
+
 
