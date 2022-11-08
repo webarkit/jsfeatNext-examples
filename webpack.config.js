@@ -25,6 +25,20 @@ module.exports = (env, argv) => {
                 extensions: [".tsx", ".ts", ".js"],
             },
             module,
+        },
+        {
+            name: "sobel",
+            devtool,
+            entry: "./src/sobel.ts",
+            output: {
+                //path: path.resolve('dist'),
+                path: path.resolve(__dirname, "dist"),
+                filename: "sobel.bundle.js",
+            },
+            resolve: {
+                extensions: [".tsx", ".ts", ".js"],
+            },
+            module,
         }
     ]
 };

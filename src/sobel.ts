@@ -1,4 +1,5 @@
 import jsfeatNext from '@webarkit/jsfeat-next';
+import { IMatrix_T } from '@webarkit/jsfeat-next/types/src/matrix_t/matrix_t';
 import { VideoStream } from './VideoStream/VideoStream'
 import { VideoSettingData } from './config/ConfigData'
 
@@ -10,11 +11,8 @@ console.log(jsfeatNext);
 const jsfeat = jsfeatNext.jsfeatNext;
 const U8_t = jsfeat.U8_t;
 const C1_t = jsfeat.C1_t;
+const S32C2_t = jsfeat.S32C2_t;
 const COLOR_RGBA2GRAY = jsfeat.COLOR_RGBA2GRAY;
-const radius = 2;
-const sigma = 0;
-var r = radius | 0;
-var kernel_size = (r + 1) << 1;
 
 let imgproc = new jsfeat.imgproc();
 
@@ -38,13 +36,13 @@ var video = document.getElementById('video') as HTMLVideoElement;
 
 const videoStream = new VideoStream(video);
 
-function render_mono_image(src: Uint8Array, dst: Uint32Array, sw: number, sh: number, dw: number) {
-    var alpha = (0xff << 24);
-    for (var i = 0; i < sh; ++i) {
-        for (var j = 0; j < sw; ++j) {
-            var pix = src[i * sw + j];
-            dst[i * dw + j] = alpha | (pix << 16) | (pix << 8) | pix;
-        }
+function render_mono_image(src: IMatrix_T, dst: Uint32Array, img_gxgy: IMatrix_T) {
+    var i = src.cols*src.rows, pix=0, gx = 0, gy = 0;
+    while(--i >= 0) {
+        gx = Math.abs(img_gxgy.data[i<<1]>>2)&0xff;
+        gy = Math.abs(img_gxgy.data[(i<<1)+1]>>2)&0xff;
+        pix = ((gx + gy)>>1)&0xff;
+        dst[i] = (pix << 24) | (gx << 16) | (0 << 8) | gy;
     }
 }
 
@@ -67,11 +65,12 @@ let process = () => {
     image_data = videoStream.image;
     var width = 640, height = 480;
     var img_u8 = new jsfeat.matrix_t(width, height, U8_t | C1_t);
+    var img_gxgy = new jsfeat.matrix_t(width, height, S32C2_t);   
     imgproc.grayscale(image_data.data, width, height, img_u8, COLOR_RGBA2GRAY);
-    imgproc.gaussian_blur(img_u8, img_u8, kernel_size, sigma)
+    imgproc.sobel_derivatives(img_u8, img_gxgy);
     var data_u32 = new Uint32Array(image_data.data.buffer);
     // we convert to mono gray image
-    render_mono_image(img_u8.data, data_u32, width, height, 640)
+    render_mono_image(img_u8, data_u32, img_gxgy)
     var ctx = videoStream.contextProcess;
     ctx.putImageData(image_data, 0, 0);
     requestAnimationFrame(process);
