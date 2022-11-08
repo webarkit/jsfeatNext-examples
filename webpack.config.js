@@ -13,13 +13,13 @@ module.exports = (env, argv) => {
         }, ],
     };
     return [{
-            name: "default",
+            name: "gaussian_blur",
             devtool,
-            entry: "./src/index.ts",
+            entry: "./src/gaussian_blur.ts",
             output: {
                 //path: path.resolve('dist'),
                 path: path.resolve(__dirname, "dist"),
-                filename: "bundle.js",
+                filename: "gaussian_blur.bundle.js",
             },
             resolve: {
                 extensions: [".tsx", ".ts", ".js"],

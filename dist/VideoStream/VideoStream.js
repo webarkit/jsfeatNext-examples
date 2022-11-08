@@ -11,15 +11,23 @@ export class VideoStream {
     ph;
     ox;
     oy;
+    scaleFactor;
     targetFrameRate = 60;
     imageDataCache;
     _frame;
     lastCache = 0;
     constructor(video) {
-        this.canvas_process = document.createElement("canvas");
+        this.canvas_process = document.getElementById("canvas");
         this.context_process = this.canvas_process.getContext("2d", { alpha: false });
         this._video = video;
         this._frame = 0;
+        this.scaleFactor = 640;
+    }
+    get height() {
+        return this.vh;
+    }
+    get width() {
+        return this.vw;
     }
     get image() {
         const now = Date.now();
@@ -37,10 +45,13 @@ export class VideoStream {
         }
         return new ImageData(this.imageDataCache.slice(), this.pw, this.ph);
     }
+    get contextProcess() {
+        return this.context_process;
+    }
     prepareImage() {
         this.vw = this._video.videoWidth;
         this.vh = this._video.videoHeight;
-        var pscale = 320 / Math.max(this.vw, (this.vh / 3) * 4);
+        var pscale = this.scaleFactor / Math.max(this.vw, (this.vh / 3) * 4);
         this.w = Math.floor(this.vw * pscale);
         this.h = Math.floor(this.vh * pscale);
         this.pw = Math.floor(Math.max(this.w, (this.h / 3) * 4));
