@@ -9,8 +9,7 @@ const radius = 2;
 const sigma = 0;
 var r = radius | 0;
 var kernel_size = (r + 1) << 1;
-let img = new jsfeat.imgproc();
-console.log(img);
+let imgproc = new jsfeat.imgproc();
 let image_data;
 const videoSettings = {
     width: {
@@ -40,8 +39,8 @@ async function init() {
     let stream = await videoStream.initialize(videoSettings);
     return stream;
 }
-init().then((e) => {
-    console.log(e);
+init().then(() => {
+    console.log('starting the app');
     canvas.width = videoStream.width;
     canvas.height = videoStream.height;
     process();
@@ -50,8 +49,8 @@ let process = () => {
     image_data = videoStream.image;
     var width = 640, height = 480;
     var img_u8 = new jsfeat.matrix_t(width, height, U8_t | C1_t);
-    img.grayscale(image_data.data, width, height, img_u8, COLOR_RGBA2GRAY);
-    img.gaussian_blur(img_u8, img_u8, kernel_size, sigma);
+    imgproc.grayscale(image_data.data, width, height, img_u8, COLOR_RGBA2GRAY);
+    imgproc.gaussian_blur(img_u8, img_u8, kernel_size, sigma);
     var data_u32 = new Uint32Array(image_data.data.buffer);
     render_mono_image(img_u8.data, data_u32, width, height, 640);
     var ctx = videoStream.contextProcess;

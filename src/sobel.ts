@@ -66,7 +66,7 @@ let process = () => {
     var width = 640, height = 480;
     var img_u8 = new jsfeat.matrix_t(width, height, U8_t | C1_t);
     var img_gxgy = new jsfeat.matrix_t(width, height, S32C2_t);   
-    imgproc.grayscale(image_data.data, width, height, img_u8, COLOR_RGBA2GRAY);
+    imgproc.grayscale(image_data.data, width, height, img_u8);
     imgproc.sobel_derivatives(img_u8, img_gxgy);
     var data_u32 = new Uint32Array(image_data.data.buffer);
     // we convert to mono gray image

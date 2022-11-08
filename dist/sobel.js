@@ -6,8 +6,7 @@ const U8_t = jsfeat.U8_t;
 const C1_t = jsfeat.C1_t;
 const S32C2_t = jsfeat.S32C2_t;
 const COLOR_RGBA2GRAY = jsfeat.COLOR_RGBA2GRAY;
-let img = new jsfeat.imgproc();
-console.log(img);
+let imgproc = new jsfeat.imgproc();
 let image_data;
 const videoSettings = {
     width: {
@@ -37,8 +36,8 @@ async function init() {
     let stream = await videoStream.initialize(videoSettings);
     return stream;
 }
-init().then((e) => {
-    console.log(e);
+init().then(() => {
+    console.log('starting the app');
     canvas.width = videoStream.width;
     canvas.height = videoStream.height;
     process();
@@ -48,8 +47,8 @@ let process = () => {
     var width = 640, height = 480;
     var img_u8 = new jsfeat.matrix_t(width, height, U8_t | C1_t);
     var img_gxgy = new jsfeat.matrix_t(width, height, S32C2_t);
-    img.grayscale(image_data.data, width, height, img_u8, COLOR_RGBA2GRAY);
-    img.sobel_derivatives(img_u8, img_gxgy);
+    imgproc.grayscale(image_data.data, width, height, img_u8);
+    imgproc.sobel_derivatives(img_u8, img_gxgy);
     var data_u32 = new Uint32Array(image_data.data.buffer);
     render_mono_image(img_u8, data_u32, img_gxgy);
     var ctx = videoStream.contextProcess;
