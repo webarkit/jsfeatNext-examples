@@ -4,6 +4,9 @@ A simple showcase for the [jsfeatNext](https://github.com/webarkit/jsfeatNext) r
 
 ## Examples
 ### List of examples:
-You an find all the examples in the examples folder.
+You can find all the examples in the examples folder.
 
+- box_blur_example.html
+- equalize_hist_example.html
 - gaussian_blur_example.html
+- sobel_example.html

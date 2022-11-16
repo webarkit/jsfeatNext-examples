@@ -33,13 +33,12 @@ var video = document.getElementById('video') as HTMLVideoElement;
 
 const videoStream = new VideoStream(video);
 
-function render_mono_image(src: IMatrix_T, dst: Uint32Array, img_gxgy: IMatrix_T) {
-    var i = src.cols * src.rows, pix = 0, gx = 0, gy = 0;
+function render_mono_image(src: IMatrix_T, dst: Uint32Array) {
+    var i = src.cols * src.rows, pix = 0;
+    var alpha = (0xff << 24)
     while (--i >= 0) {
-        gx = Math.abs(img_gxgy.data[i << 1] >> 2) & 0xff;
-        gy = Math.abs(img_gxgy.data[(i << 1) + 1] >> 2) & 0xff;
-        pix = ((gx + gy) >> 1) & 0xff;
-        dst[i] = (pix << 24) | (gx << 16) | (0 << 8) | gy;
+        pix = src.data[i];
+        dst[i] = alpha | (pix << 16) | (pix << 8) | pix;
     }
 }
 
@@ -64,10 +63,11 @@ let process = () => {
     var img_u8 = new jsfeat.matrix_t(width, height, U8_t | C1_t);
     var img_gxgy = new jsfeat.matrix_t(width, height, S32C2_t);
     imgproc.grayscale(image_data.data, width, height, img_u8);
-    imgproc.sobel_derivatives(img_u8, img_gxgy);
+    //imgproc.sobel_derivatives(img_u8, img_gxgy);
+    imgproc.equalize_histogram(img_u8, img_u8);
     var data_u32 = new Uint32Array(image_data.data.buffer);
     // we convert to mono gray image
-    render_mono_image(img_u8, data_u32, img_gxgy)
+    render_mono_image(img_u8, data_u32)
     var ctx = videoStream.contextProcess;
     ctx.putImageData(image_data, 0, 0);
     requestAnimationFrame(process);

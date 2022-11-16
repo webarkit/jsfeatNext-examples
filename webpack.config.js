@@ -12,12 +12,38 @@ module.exports = (env, argv) => {
             exclude: /node_modules/,
         }, ],
     };
-    return [{
+    return [
+        {
+            name: "box_blur",
+            devtool,
+            entry: "./src/box_blur.ts",
+            output: {
+                path: path.resolve(__dirname, "dist"),
+                filename: "box_blur.bundle.js",
+            },
+            resolve: {
+                extensions: [".tsx", ".ts", ".js"],
+            },
+            module,
+        },
+        {
+            name: "equalize_hist",
+            devtool,
+            entry: "./src/equalize_hist.ts",
+            output: {
+                path: path.resolve(__dirname, "dist"),
+                filename: "equalize_hist.bundle.js",
+            },
+            resolve: {
+                extensions: [".tsx", ".ts", ".js"],
+            },
+            module,
+        },
+        {
             name: "gaussian_blur",
             devtool,
             entry: "./src/gaussian_blur.ts",
             output: {
-                //path: path.resolve('dist'),
                 path: path.resolve(__dirname, "dist"),
                 filename: "gaussian_blur.bundle.js",
             },
@@ -31,7 +57,6 @@ module.exports = (env, argv) => {
             devtool,
             entry: "./src/sobel.ts",
             output: {
-                //path: path.resolve('dist'),
                 path: path.resolve(__dirname, "dist"),
                 filename: "sobel.bundle.js",
             },
