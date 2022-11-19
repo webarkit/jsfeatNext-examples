@@ -1,7 +1,7 @@
 {
-  "name": "jsfeatnext-example",
+  "name": "@webarkit/jsfeat-next-examples",
   "version": "1.0.0",
-  "description": "A simple typescript jsfeatNextt example.",
+  "description": "Some typescript jsfeatNext examples.",
   "main": "index.js",
   "scripts": {
     "dev-ts": "rimraf ./dist && tsc && webpack --mode development --progress --watch",
@@ -10,20 +10,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kalwalt/jsfeatNext-example.git"
+    "url": "git+https://github.com/kalwalt/jsfeatNext-examples.git"
   },
   "keywords": [
     "jsfeatNext",
     "jsfeat",
     "typescript",
+    "WebARKit",
+    "WebAR",
     "computer-vision"
   ],
   "author": "Walter Perdan",
-  "license": "GPL-3.0",
+  "license": "LGPL-3.0",
   "bugs": {
-    "url": "https://github.com/kalwalt/jsfeatNext-example/issues"
+    "url": "https://github.com/kalwalt/jsfeatNext-examples/issues"
   },
-  "homepage": "https://github.com/kalwalt/jsfeatNext-example#readme",
+  "homepage": "https://github.com/kalwalt/jsfeatNext-examples#readme",
   "dependencies": {
     "@webarkit/jsfeat-next": "^0.7.2",
     "rimraf": "^3.0.2",
