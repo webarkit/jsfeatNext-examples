@@ -66,6 +66,19 @@ module.exports = (env, argv) => {
             module,
         },
         {
+            name: "warp affine",
+            devtool,
+            entry: "./src/warp_affine.ts",
+            output: {
+                path: path.resolve(__dirname, "dist"),
+                filename: "warp_affine.bundle.js",
+            },
+            resolve: {
+                extensions: [".tsx", ".ts", ".js"],
+            },
+            module,
+        },
+        {
             name: "warp perspective",
             devtool,
             entry: "./src/warp_perspective.ts",
@@ -77,6 +90,7 @@ module.exports = (env, argv) => {
                 extensions: [".tsx", ".ts", ".js"],
             },
             module,
-        }
+        },
+        
     ]
 };

@@ -5,7 +5,6 @@ const jsfeat = jsfeatNext.jsfeatNext;
 const U8_t = jsfeat.U8_t;
 const C1_t = jsfeat.C1_t;
 const S32C2_t = jsfeat.S32C2_t;
-const COLOR_RGBA2GRAY = jsfeat.COLOR_RGBA2GRAY;
 let imgproc = new jsfeat.imgproc();
 let image_data;
 const videoSettings = {

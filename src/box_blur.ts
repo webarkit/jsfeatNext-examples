@@ -50,8 +50,6 @@ async function init() {
     return stream;
 }
 
-
-
 init().then(() => {
     console.log('starting the app');
     canvas.width = videoStream.width;
