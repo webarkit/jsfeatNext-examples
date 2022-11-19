@@ -64,6 +64,19 @@ module.exports = (env, argv) => {
                 extensions: [".tsx", ".ts", ".js"],
             },
             module,
+        },
+        {
+            name: "warp perspective",
+            devtool,
+            entry: "./src/warp_perspective.ts",
+            output: {
+                path: path.resolve(__dirname, "dist"),
+                filename: "warp_perspective.bundle.js",
+            },
+            resolve: {
+                extensions: [".tsx", ".ts", ".js"],
+            },
+            module,
         }
     ]
 };
