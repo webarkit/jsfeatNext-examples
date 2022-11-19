@@ -4,7 +4,7 @@ console.log(jsfeatNext);
 const jsfeat = jsfeatNext.jsfeatNext;
 const U8_t = jsfeat.U8_t;
 const C1_t = jsfeat.C1_t;
-const S32C2_t = jsfeat.S32C2_t;
+const F32_t = jsfeat.F32_t;
 let imgproc = new jsfeat.imgproc();
 let image_data;
 const videoSettings = {
@@ -22,13 +22,12 @@ const videoSettings = {
 var canvas = document.getElementById('canvas');
 var video = document.getElementById('video');
 const videoStream = new VideoStream(video);
-function render_mono_image(src, dst, img_gxgy) {
-    var i = src.cols * src.rows, pix = 0, gx = 0, gy = 0;
+function render_mono_image(src, dst) {
+    var i = src.cols * src.rows, pix = 0;
+    var alpha = (0xff << 24);
     while (--i >= 0) {
-        gx = Math.abs(img_gxgy.data[i << 1] >> 2) & 0xff;
-        gy = Math.abs(img_gxgy.data[(i << 1) + 1] >> 2) & 0xff;
-        pix = ((gx + gy) >> 1) & 0xff;
-        dst[i] = (pix << 24) | (gx << 16) | (0 << 8) | gy;
+        pix = src.data[i];
+        dst[i] = alpha | (pix << 16) | (pix << 8) | pix;
     }
 }
 async function init() {
@@ -44,14 +43,22 @@ init().then(() => {
 let process = () => {
     image_data = videoStream.image;
     var width = 640, height = 480;
-    var img_u8 = new jsfeat.matrix_t(width, height, U8_t | C1_t);
-    var img_gxgy = new jsfeat.matrix_t(width, height, S32C2_t);
+    var img_u8, img_u8_warp, mat_affine;
+    img_u8 = new jsfeat.matrix_t(width, height, U8_t | C1_t);
     imgproc.grayscale(image_data.data, width, height, img_u8);
-    imgproc.sobel_derivatives(img_u8, img_gxgy);
+    img_u8_warp = new jsfeat.matrix_t(640, 480, U8_t | C1_t);
+    mat_affine = new jsfeat.matrix_t(3, 2, F32_t | C1_t);
+    mat_affine.data[0] = 1.1548494156391083;
+    mat_affine.data[1] = 0.4783542904563622;
+    mat_affine.data[2] = -164.3568427140416;
+    mat_affine.data[3] = -0.4783542904563622;
+    mat_affine.data[4] = 1.1548494156391083;
+    mat_affine.data[5] = 115.90951319264985;
+    imgproc.warp_affine(img_u8, img_u8_warp, mat_affine, 0);
     var data_u32 = new Uint32Array(image_data.data.buffer);
-    render_mono_image(img_u8, data_u32, img_gxgy);
+    render_mono_image(img_u8_warp, data_u32);
     var ctx = videoStream.contextProcess;
     ctx.putImageData(image_data, 0, 0);
     requestAnimationFrame(process);
 };
-//# sourceMappingURL=sobel.js.map
+//# sourceMappingURL=warp_affine.js.map

@@ -9,7 +9,7 @@ const jsfeat = jsfeatNext.jsfeatNext;
 const U8_t = jsfeat.U8_t;
 const C1_t = jsfeat.C1_t;
 const S32C2_t = jsfeat.S32C2_t;
-const COLOR_RGBA2GRAY = jsfeat.COLOR_RGBA2GRAY;
+//const COLOR_RGBA2GRAY = jsfeat.COLOR_RGBA2GRAY;
 
 let imgproc = new jsfeat.imgproc();
 
@@ -46,8 +46,6 @@ async function init() {
     let stream = await videoStream.initialize(videoSettings)
     return stream;
 }
-
-
 
 init().then(() => {
     console.log('starting the app');
