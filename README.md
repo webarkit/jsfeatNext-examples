@@ -10,3 +10,5 @@ You can find all the examples in the examples folder.
 - equalize_hist_example.html
 - gaussian_blur_example.html
 - sobel_example.html
+- warp_affine_example.html
+- warp_perspective_example.html
