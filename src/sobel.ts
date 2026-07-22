@@ -5,12 +5,9 @@ import { VideoSettingData } from './config/ConfigData'
 
 console.log(jsfeatNext);
 
-const jsfeat = jsfeatNext.jsfeatNext;
-const U8_t = jsfeat.U8_t;
-const C1_t = jsfeat.C1_t;
-const S32C2_t = jsfeat.S32C2_t;
-
-let imgproc = new jsfeat.imgproc();
+const U8_t = jsfeatNext.U8_t;
+const C1_t = jsfeatNext.C1_t;
+const S32C2_t = jsfeatNext.S32C2_t;
 
 let image_data: ImageData;
 
@@ -58,10 +55,10 @@ init().then(() => {
 let process = () => {
     image_data = videoStream.image;
     var width = 640, height = 480;
-    var img_u8 = new jsfeat.matrix_t(width, height, U8_t | C1_t);
-    var img_gxgy = new jsfeat.matrix_t(width, height, S32C2_t);
-    imgproc.grayscale(image_data.data, width, height, img_u8);
-    imgproc.sobel_derivatives(img_u8, img_gxgy);
+    var img_u8 = new jsfeatNext.matrix_t(width, height, U8_t | C1_t);
+    var img_gxgy = new jsfeatNext.matrix_t(width, height, S32C2_t);
+    jsfeatNext.imgproc.grayscale(image_data.data, width, height, img_u8);
+    jsfeatNext.imgproc.sobel_derivatives(img_u8, img_gxgy);
     var data_u32 = new Uint32Array(image_data.data.buffer);
     // we convert to mono gray image
     render_mono_image(img_u8, data_u32, img_gxgy)

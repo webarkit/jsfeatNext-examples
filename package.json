@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/kalwalt/jsfeatNext-examples#readme",
   "dependencies": {
-    "@webarkit/jsfeat-next": "^0.7.2",
+    "@webarkit/jsfeat-next": "^0.9.0",
     "rimraf": "^3.0.2",
     "typescript": "^4.9.3",
     "webpack": "^5.75.0",
