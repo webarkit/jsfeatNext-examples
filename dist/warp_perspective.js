@@ -1,13 +1,9 @@
 import jsfeatNext from '@webarkit/jsfeat-next';
 import { VideoStream } from './VideoStream/VideoStream';
 console.log(jsfeatNext);
-const jsfeat = jsfeatNext.jsfeatNext;
-const U8_t = jsfeat.U8_t;
-const C1_t = jsfeat.C1_t;
-const F32_t = jsfeat.F32_t;
-let imgproc = new jsfeat.imgproc();
-let transform_c = new jsfeat.transform();
-let matmath = new jsfeat.matmath();
+const U8_t = jsfeatNext.U8_t;
+const C1_t = jsfeatNext.C1_t;
+const F32_t = jsfeatNext.F32_t;
 let image_data;
 const videoSettings = {
     width: {
@@ -46,13 +42,13 @@ let process = () => {
     image_data = videoStream.image;
     var width = 640, height = 480;
     var img_u8, img_u8_warp, transform;
-    img_u8 = new jsfeat.matrix_t(width, height, U8_t | C1_t);
-    imgproc.grayscale(image_data.data, width, height, img_u8);
-    img_u8_warp = new jsfeat.matrix_t(640, 480, U8_t | C1_t);
-    transform = new jsfeat.matrix_t(3, 3, F32_t | C1_t);
-    transform_c.perspective_4point_transform(transform, 0, 0, 50, 50, 640, 0, 550, 100, 640, 480, 300, 400, 0, 480, 100, 400);
-    matmath.invert_3x3(transform, transform);
-    imgproc.warp_perspective(img_u8, img_u8_warp, transform, 0);
+    img_u8 = new jsfeatNext.matrix_t(width, height, U8_t | C1_t);
+    jsfeatNext.imgproc.grayscale(image_data.data, width, height, img_u8);
+    img_u8_warp = new jsfeatNext.matrix_t(640, 480, U8_t | C1_t);
+    transform = new jsfeatNext.matrix_t(3, 3, F32_t | C1_t);
+    jsfeatNext.transform.perspective_4point_transform(transform, 0, 0, 50, 50, 640, 0, 550, 100, 640, 480, 300, 400, 0, 480, 100, 400);
+    jsfeatNext.matmath.invert_3x3(transform, transform);
+    jsfeatNext.imgproc.warp_perspective(img_u8, img_u8_warp, transform, 0);
     var data_u32 = new Uint32Array(image_data.data.buffer);
     render_mono_image(img_u8_warp, data_u32);
     var ctx = videoStream.contextProcess;
