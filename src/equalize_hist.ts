@@ -1,5 +1,5 @@
 import jsfeatNext from '@webarkit/jsfeat-next';
-import { IMatrix_T } from '@webarkit/jsfeat-next/types/src/matrix_t/matrix_t';
+import { IMatrix_T } from '@webarkit/jsfeat-next';
 import { VideoStream } from './VideoStream/VideoStream'
 import { VideoSettingData } from './config/ConfigData'
 
